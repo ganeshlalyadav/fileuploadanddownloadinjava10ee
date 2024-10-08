@@ -1,4 +1,6 @@
 package org.test.jakarta.hello.resource;
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -45,4 +47,15 @@ public class ProductResource {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+
+    @GET
+    @Path("/filter")
+    public List<Product> getFilteredProducts(@QueryParam("filter") String filter) {
+        if (filter != null && !filter.isEmpty()) {
+            Node rootNode = new RSQLParser().parse(filter);
+            return productRepository.filterByRSQL(rootNode);
+        }
+        return productRepository.findAll();
+    }
+
 }
