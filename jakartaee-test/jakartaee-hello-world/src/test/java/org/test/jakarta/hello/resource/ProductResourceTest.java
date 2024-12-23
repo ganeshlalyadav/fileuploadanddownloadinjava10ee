@@ -54,4 +54,39 @@ public class ProductResourceTest {
 
         assertEquals(2, foundProducts.size());
     }
+    @Test
+    public void testFindProductById() {
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Product 1");
+        product.setPrice(100.0);
+        when(productRepository.find(1L)).thenReturn(product);
+        Product foundProduct = productResource.find(1L);
+        assertEquals(1L, foundProduct.getId());
+    }
+
+    @Test
+    public void testUpdateProduct() {
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Product 1");
+        product.setPrice(100.0);
+        when(productRepository.update(product)).thenReturn(product);
+        Product updatedProduct = productResource.update(1L, product);
+        assertEquals(1L, updatedProduct.getId());
+    }
+    @Test
+    public void testDeleteProduct() {
+        productResource.delete(1L);
+        verify(productRepository).delete(1L);
+    }
+    @Test
+    public void testGetFilteredProducts() {
+        List<Product> productList = Arrays.asList(new Product(), new Product());
+        when(productRepository.filterByRSQL(any())).thenReturn(productList);
+        List<Product> filteredProducts = productResource.getFilteredProducts("name==Test");
+        assertEquals(2, filteredProducts.size());
+    }
+
+
 }
