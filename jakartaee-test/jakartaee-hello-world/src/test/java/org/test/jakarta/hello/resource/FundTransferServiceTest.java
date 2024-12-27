@@ -98,6 +98,25 @@ public class FundTransferServiceTest {
         assertThrows(RuntimeException.class, () -> fundTransferServiceBMT.transferFunds(fromAccount, toAccount, amount));
     }
 
+    @Test
+
+    void testTransferFundsSuccess() {
+        Account sourceAccount = new Account();
+        sourceAccount.setAccountNumber("12345");
+        sourceAccount.setBalance(1000.0);
+        Account destinationAccount = new Account();
+        destinationAccount.setAccountNumber("67890");
+        destinationAccount.setBalance(500.0);
+        when(accountDAO.findByAccountNumber("12345")).thenReturn(sourceAccount);
+        when(accountDAO.findByAccountNumber("67890")).thenReturn(destinationAccount);
+        fundTransferServiceBMT.transferFunds("12345", "67890", 200.0);
+        assertEquals(800.0, sourceAccount.getBalance());
+        assertEquals(700.0, destinationAccount.getBalance());
+        verify(accountDAO, times(2)).update(any(Account.class));
+
+
+    }
+
 
 
 }

@@ -9,13 +9,16 @@ import org.test.jakarta.hello.model.Account;
 @Stateless
 public class FundTransferServiceBMT {
 
-    @Resource
-    private UserTransaction userTransaction;
+   /* @Resource
+    private UserTransaction userTransaction;*/
 
     private final AccountDAO accountDAO;
+    private final UserTransaction userTransaction;
 
-    public FundTransferServiceBMT(AccountDAO accountDAO) {
+
+    public FundTransferServiceBMT(AccountDAO accountDAO, UserTransaction userTransaction) {
         this.accountDAO = accountDAO;
+        this.userTransaction = userTransaction;
     }
 
     public void transferFunds(String fromAccount, String toAccount, Double amount) {

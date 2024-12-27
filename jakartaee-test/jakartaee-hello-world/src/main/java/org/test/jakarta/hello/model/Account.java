@@ -11,7 +11,9 @@ public class Account {
     private String accountNumber;
     private Double balance;
 
-    public Account(String fromAccount, double v) {
+    public Account(String accountNumber, Double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance != null ? balance : 0.0; // Make sure it's not null
     }
 
     public Account(Long id, String accountNumber, Double balance) {
